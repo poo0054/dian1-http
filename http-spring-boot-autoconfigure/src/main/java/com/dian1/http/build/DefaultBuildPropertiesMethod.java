@@ -25,7 +25,8 @@ public class DefaultBuildPropertiesMethod implements BuildPropertiesMethod {
     private HttpHandleCompose httpHandleCompose;
 
     @Override
-    public <V extends Annotation> void buildMethodHandles(Method method, HttpProperties httpProperties) {
+    public <V extends Annotation> void buildMethodHandles(HttpProperties httpProperties) {
+        Method method = httpProperties.getMostSpecificMethod();
         List<MethodHandle> allMethodHandle = httpHandleCompose.getAllMethodHandle(method);
         for (MethodHandle<V> methodHandle : allMethodHandle) {
             Class<V> typeArgument = (Class<V>) ClassUtil.getTypeArgument(methodHandle.getClass());

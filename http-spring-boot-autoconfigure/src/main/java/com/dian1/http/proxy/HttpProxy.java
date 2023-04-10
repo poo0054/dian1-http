@@ -7,6 +7,7 @@ import com.dian1.http.build.BuildHttpRequest;
 import com.dian1.http.build.BuildPropertiesClass;
 import com.dian1.http.build.BuildPropertiesMethod;
 import com.dian1.http.build.BuildPropertiesParameter;
+import com.dian1.http.exception.HttpException;
 import com.dian1.http.handle.HttpHandleCompose;
 import com.dian1.http.properties.HttpProperties;
 import lombok.Data;
@@ -74,20 +75,28 @@ public class HttpProxy<T> implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
-        Method mostSpecificMethod = AopUtils.getMostSpecificMethod(method, httpInterfaces);
         HttpProperties properties = new HttpProperties();
-        properties.setMostSpecificMethod(method);
-        properties.setArgs(args);
+        try {
+            Method mostSpecificMethod = AopUtils.getMostSpecificMethod(method, httpInterfaces);
+            properties.setMostSpecificMethod(mostSpecificMethod);
+            properties.setArgs(args);
+            return exec(properties);
+        } catch (Exception e) {
+            throw new HttpException(e, "构建http失败,properties:{}", properties);
+        }
+    }
+
+    private Object exec(HttpProperties properties) {
         //首先处理一些特殊的参数,  Consumer<HttpResponse> file  OutputStream
         handleSpecialArgs(properties);
         //类
         buildPropertiesClass.buildClassHandle(httpInterfaces, properties);
         //方法
-        buildPropertiesMethod.buildMethodHandles(mostSpecificMethod, properties);
+        buildPropertiesMethod.buildMethodHandles(properties);
         //参数
         buildPropertiesParameter.buildParameterHandle(properties);
         //构建请求并构建返回
-        return buildHttpRequest.response(buildHttpRequest.request(properties), mostSpecificMethod, properties);
+        return buildHttpRequest.response(buildHttpRequest.request(properties), properties);
     }
 
     private void handleSpecialArgs(HttpProperties properties) {

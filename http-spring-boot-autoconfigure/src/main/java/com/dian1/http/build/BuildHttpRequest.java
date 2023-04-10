@@ -3,7 +3,6 @@ package com.dian1.http.build;
 import com.dian1.http.properties.HttpProperties;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 
 /**
  * @author zhangzhi
@@ -19,5 +18,5 @@ public interface BuildHttpRequest<T> {
     T request(HttpProperties properties);
 
 
-    <V extends Annotation> Object response(T httpRequest, Method method, HttpProperties httpProperties);
+    <V extends Annotation> Object response(T httpRequest, HttpProperties httpProperties);
 }

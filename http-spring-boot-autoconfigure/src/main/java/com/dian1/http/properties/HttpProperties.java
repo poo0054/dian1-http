@@ -1,6 +1,7 @@
 package com.dian1.http.properties;
 
 import cn.hutool.core.io.StreamProgress;
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.http.HttpGlobalConfig;
 import cn.hutool.http.Method;
 import lombok.Data;
@@ -65,6 +66,19 @@ public class HttpProperties implements Serializable {
     private Map<String, Object> body = new HashMap<>();
 
     /**
+     * 设置内容主体 请求体body参数支持两种类型：
+     * 1. 标准参数，例如 a=1&b=2 这种格式
+     * 2. Rest模式，此时body需要传入一个JSON或者XML字符串
+     */
+    private String bodyStr;
+
+    /**
+     * 优先级 bodyBytes>bodyStr>body
+     * 设置主体字节码 需在此方法调用前使用charset方法设置编码，否则使用默认编码UTF-8
+     */
+    private byte[] bodyBytes;
+
+    /**
      * 设置内容主体<br>
      * 请求体body参数支持两种类型：
      *
@@ -116,7 +130,7 @@ public class HttpProperties implements Serializable {
     /**
      * 编码
      */
-    private Charset charset;
+    private Charset charset = CharsetUtil.CHARSET_UTF_8;
 
     /**
      * 进度条

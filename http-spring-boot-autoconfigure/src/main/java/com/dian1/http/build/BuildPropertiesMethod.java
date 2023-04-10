@@ -3,7 +3,6 @@ package com.dian1.http.build;
 import com.dian1.http.properties.HttpProperties;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 
 /**
  * @author zhangzhi
@@ -17,5 +16,5 @@ public interface BuildPropertiesMethod {
      * @param method         当前调用方法
      * @param httpProperties 当前参数
      */
-    <V extends Annotation> void buildMethodHandles(Method method, HttpProperties httpProperties);
+    <V extends Annotation> void buildMethodHandles(HttpProperties httpProperties);
 }

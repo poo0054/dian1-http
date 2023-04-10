@@ -1,7 +1,6 @@
 package com.dian1.http.build;
 
 import cn.hutool.core.net.url.UrlBuilder;
-import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
@@ -18,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.nio.charset.Charset;
 import java.util.Map;
 
 /**
@@ -44,11 +42,20 @@ public class HutoolBuildHttpRequest implements BuildHttpRequest<HttpRequest> {
         HttpRequest httpRequest = new HttpRequest(url);
         httpRequest.setMethod(properties.getMethod());
         httpRequest.setRest(properties.isRest());
+        httpRequest.charset(properties.getCharset());
         if (ObjectUtil.isNotEmpty(properties.getForm())) {
             httpRequest.form(properties.getForm());
         }
+        //适配map类型
+        // todo json需要使用抽象的
         if (ObjectUtil.isNotEmpty(properties.getBody())) {
             httpRequest.body(JSON.toJSONString(properties.getBody()));
+        }
+        if (ObjectUtil.isNotEmpty(properties.getBodyStr())) {
+            httpRequest.body(properties.getBodyStr());
+        }
+        if (ObjectUtil.isNotEmpty(properties.getBodyBytes())) {
+            httpRequest.body(properties.getBodyBytes());
         }
         httpRequest.timeout(properties.getTimeout());
         httpRequest.setUrlHandler(properties.getUrlHandler());
@@ -62,8 +69,6 @@ public class HutoolBuildHttpRequest implements BuildHttpRequest<HttpRequest> {
         httpRequest.setProxy(properties.getProxy());
         httpRequest.setHostnameVerifier(properties.getHostnameVerifier());
         httpRequest.setSSLSocketFactory(properties.getSsf());
-        Charset charset = properties.getCharset();
-        httpRequest.charset(null == charset ? CharsetUtil.CHARSET_UTF_8 : charset);
         Map<String, String> headers = properties.getHeaders();
         if (ObjectUtil.isNotEmpty(headers)) {
             headers.forEach(httpRequest::header);
@@ -74,7 +79,7 @@ public class HutoolBuildHttpRequest implements BuildHttpRequest<HttpRequest> {
     }
 
     @Override
-    public <V extends Annotation> Object response(HttpRequest httpRequest, Method method, HttpProperties httpProperties) {
+    public <V extends Annotation> Object response(HttpRequest httpRequest, HttpProperties httpProperties) {
         log.info("httpRequest:{} \n httpRequest-form:{} \n 参数:{}", httpRequest, httpRequest.form(), httpProperties);
         return resolving(httpRequest, httpProperties);
     }
@@ -123,6 +128,7 @@ public class HutoolBuildHttpRequest implements BuildHttpRequest<HttpRequest> {
         if (method.getReturnType().isAssignableFrom(void.class)) {
             return null;
         }
+        //todo json需要使用抽象的
         return JSON.parseObject(body, method.getGenericReturnType());
     }
 
@@ -134,4 +140,6 @@ public class HutoolBuildHttpRequest implements BuildHttpRequest<HttpRequest> {
         }
         return null;
     }
+
+
 }
