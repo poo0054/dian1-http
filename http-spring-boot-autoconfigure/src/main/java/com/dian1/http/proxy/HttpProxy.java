@@ -10,6 +10,7 @@ import com.dian1.http.build.BuildPropertiesParameter;
 import com.dian1.http.exception.HttpException;
 import com.dian1.http.handle.HttpHandleCompose;
 import com.dian1.http.properties.HttpProperties;
+import com.dian1.http.utils.ExceptionConsumer;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.support.AopUtils;
@@ -76,27 +77,46 @@ public class HttpProxy<T> implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
         HttpProperties properties = new HttpProperties();
-        try {
-            Method mostSpecificMethod = AopUtils.getMostSpecificMethod(method, httpInterfaces);
-            properties.setMostSpecificMethod(mostSpecificMethod);
-            properties.setArgs(args);
-            return exec(properties);
-        } catch (Exception e) {
-            throw new HttpException(e, "构建http失败,properties:{}", properties);
-        }
+        Method mostSpecificMethod = AopUtils.getMostSpecificMethod(method, httpInterfaces);
+        properties.setMostSpecificMethod(mostSpecificMethod);
+        properties.setArgs(args);
+        return exec(properties, (e, name) -> {
+            throw new HttpException(e, "{}构建失败   properties:{}", name, properties);
+        });
     }
 
-    private Object exec(HttpProperties properties) {
+    private Object exec(HttpProperties properties, ExceptionConsumer exceptionConsumer) {
         //首先处理一些特殊的参数,  Consumer<HttpResponse> file  OutputStream
-        handleSpecialArgs(properties);
+        try {
+            handleSpecialArgs(properties);
+        } catch (Exception e) {
+            exceptionConsumer.accept(e, "handleSpecialArgs");
+        }
         //类
-        buildPropertiesClass.buildClassHandle(httpInterfaces, properties);
+        try {
+            buildPropertiesClass.buildClassHandle(httpInterfaces, properties);
+        } catch (Exception e) {
+            exceptionConsumer.accept(e, "buildClassHandle");
+        }
         //方法
-        buildPropertiesMethod.buildMethodHandles(properties);
+        try {
+            buildPropertiesMethod.buildMethodHandles(properties);
+        } catch (Exception e) {
+            exceptionConsumer.accept(e, "buildMethodHandles");
+        }
         //参数
-        buildPropertiesParameter.buildParameterHandle(properties);
+        try {
+            buildPropertiesParameter.buildParameterHandle(properties);
+        } catch (Exception e) {
+            exceptionConsumer.accept(e, "buildParameterHandle");
+        }
         //构建请求并构建返回
-        return buildHttpRequest.response(buildHttpRequest.request(properties), properties);
+        try {
+            return buildHttpRequest.response(buildHttpRequest.request(properties), properties);
+        } catch (Exception e) {
+            exceptionConsumer.accept(e, "BuildHttpRequest");
+            throw new RuntimeException(e);
+        }
     }
 
     private void handleSpecialArgs(HttpProperties properties) {
