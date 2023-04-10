@@ -7,6 +7,7 @@ import com.dian1.http.handle.ParameterHandle;
 import com.dian1.http.properties.HttpProperties;
 import com.dian1.http.utils.ClassUtils;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,13 +23,12 @@ import java.util.*;
  * @date 2023/4/4
  */
 @Data
+@Slf4j
 @Component
 public class ValidatedHandle<T> implements ParameterHandle<HttpValidated> {
 
-
     @Autowired
     private Validator validator;
-
 
     @Override
     public HttpProperties resolving(HttpProperties properties, Object arg, HttpValidated basicAuth) {
@@ -70,8 +70,11 @@ public class ValidatedHandle<T> implements ParameterHandle<HttpValidated> {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < validate.size(); i++) {
             Set<ConstraintViolation<T>> constraintViolations = validate.get(i);
-            for (ConstraintViolation<T> next : constraintViolations) {
-                sb.append(i).append(" : ").append(next.getPropertyPath()).append("[").append(next.getInvalidValue()).append("]").append("\t").append(next.getMessage()).append("\n");
+            for (ConstraintViolation<T> constraintViolation : constraintViolations) {
+                sb.append(i).append(" : ")
+                        .append(constraintViolation.getPropertyPath())
+                        .append("[").append(constraintViolation.getInvalidValue()).append("]").append("\t")
+                        .append(constraintViolation.getMessage()).append("\n");
                 isErr = true;
             }
         }

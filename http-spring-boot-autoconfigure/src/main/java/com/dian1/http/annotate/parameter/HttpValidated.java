@@ -21,7 +21,7 @@ public @interface HttpValidated {
     Class<?>[] groups() default Default.class;
 
     /**
-     * 指定处理类,必须为{@link ParameterHandle}的子类
+     * 指定处理类,必须为{@link ParameterHandle}的子类全类名 或者注入spring的name
      */
     String handleClassName() default "";
 }
