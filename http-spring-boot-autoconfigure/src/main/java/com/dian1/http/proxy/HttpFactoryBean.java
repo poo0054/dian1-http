@@ -5,11 +5,10 @@ import com.dian1.http.build.BuildPropertiesClass;
 import com.dian1.http.build.BuildPropertiesMethod;
 import com.dian1.http.build.BuildPropertiesParameter;
 import com.dian1.http.handle.HttpHandleCompose;
-import com.dian1.http.utils.ApplicationContextUtils;
-import lombok.Data;
+import lombok.Getter;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.context.ApplicationContext;
 
 import java.lang.reflect.Proxy;
 
@@ -19,15 +18,14 @@ import java.lang.reflect.Proxy;
  * @author zhangzhi
  * @date 2023/3/27
  */
-@Data
-public class HttpFactoryBean<T> implements FactoryBean<T> {
+@Getter
+public class HttpFactoryBean<T> implements FactoryBean<T>, BeanFactoryAware {
 
     BeanFactory beanFactory;
     /**
      * 当前接口类------被OpenHttp注释的接口
      */
     private Class<T> httpInterfaces;
-    private ApplicationContext applicationContext;
     private HttpHandleCompose httpHandleCompose;
     private BuildPropertiesClass buildPropertiesClass;
     private BuildPropertiesMethod buildPropertiesMethod;
@@ -60,16 +58,19 @@ public class HttpFactoryBean<T> implements FactoryBean<T> {
     }
 
     public void init() {
-        if (init) {
-            applicationContext = ApplicationContextUtils.getApplicationContext();
-            this.httpHandleCompose = applicationContext.getBean(HttpHandleCompose.class);
-            this.buildPropertiesClass = applicationContext.getBean(BuildPropertiesClass.class);
-            this.buildPropertiesMethod = applicationContext.getBean(BuildPropertiesMethod.class);
-            this.buildPropertiesParameter = applicationContext.getBean(BuildPropertiesParameter.class);
-            this.buildHttpRequest = applicationContext.getBean(BuildHttpRequest.class);
+        if (!init) {
+            this.httpHandleCompose = beanFactory.getBean(HttpHandleCompose.class);
+            this.buildPropertiesClass = beanFactory.getBean(BuildPropertiesClass.class);
+            this.buildPropertiesMethod = beanFactory.getBean(BuildPropertiesMethod.class);
+            this.buildPropertiesParameter = beanFactory.getBean(BuildPropertiesParameter.class);
+            this.buildHttpRequest = beanFactory.getBean(BuildHttpRequest.class);
             init = true;
         }
     }
 
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) {
+        this.beanFactory = beanFactory;
+    }
 
 }

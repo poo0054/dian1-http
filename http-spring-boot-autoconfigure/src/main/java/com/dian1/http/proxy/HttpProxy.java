@@ -7,7 +7,6 @@ import com.dian1.http.build.BuildHttpRequest;
 import com.dian1.http.build.BuildPropertiesClass;
 import com.dian1.http.build.BuildPropertiesMethod;
 import com.dian1.http.build.BuildPropertiesParameter;
-import com.dian1.http.exception.HttpException;
 import com.dian1.http.handle.HttpHandleCompose;
 import com.dian1.http.properties.HttpProperties;
 import com.dian1.http.utils.ExceptionConsumer;
@@ -81,7 +80,8 @@ public class HttpProxy<T> implements InvocationHandler {
         properties.setMostSpecificMethod(mostSpecificMethod);
         properties.setArgs(args);
         return exec(properties, (e, name) -> {
-            throw new HttpException(e, "{}构建失败   properties:{}", name, properties);
+            log.error("{}构建失败   properties:{}", name, properties);
+            e.printStackTrace();
         });
     }
 

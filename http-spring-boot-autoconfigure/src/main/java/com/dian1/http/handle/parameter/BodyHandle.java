@@ -19,15 +19,23 @@ public class BodyHandle implements ParameterHandle<Body> {
 
     @Override
     public HttpProperties resolving(HttpProperties properties, Object arg, Body body) {
-        Map<String, Object> bodyMap = properties.getBody();
-        if (StrUtil.isNotBlank(body.value())) {
-            bodyMap.put(body.value(), JSON.toJSONString(arg));
-        } else {
-            if (Map.class.isAssignableFrom(arg.getClass())) {
-                bodyMap.putAll((Map) arg);
-            }
+        //map类型
+        if (Map.class.isAssignableFrom(arg.getClass())) {
+            properties.getBody().putAll((Map) arg);
+            return properties;
         }
-        properties.setBody(bodyMap);
+        //有参数的
+        if (StrUtil.isNotBlank(body.value())) {
+            properties.getBody().put(body.value(), arg);
+        } else {
+            //无参数的
+            if (String.class.isAssignableFrom(arg.getClass())) {
+                properties.setBodyStr((String) arg);
+                return properties;
+            }
+            //其余类型默认为转换string
+            properties.setBodyStr(JSON.toJSONString(arg));
+        }
         return properties;
     }
 
