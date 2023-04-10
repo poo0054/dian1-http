@@ -115,8 +115,8 @@ public class HttpProxy<T> implements InvocationHandler {
             return buildHttpRequest.response(buildHttpRequest.request(properties), properties);
         } catch (Exception e) {
             exceptionConsumer.accept(e, "BuildHttpRequest");
-            throw new RuntimeException(e);
         }
+        return null;
     }
 
     private void handleSpecialArgs(HttpProperties properties) {
