@@ -80,29 +80,6 @@
 
             <dependency>
                 <groupId>com.dian1</groupId>
-                <artifactId>gen-spring-boot-autoconfigure</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.dian1</groupId>
-                <artifactId>gen-spring-boot-starter</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.dian1</groupId>
-                <artifactId>dynamic_table-spring-boot-autoconfigure</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dian1</groupId>
-                <artifactId>dynamic_table-spring-boot-starter</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.dian1</groupId>
                 <artifactId>http-spring-boot-autoconfigure</artifactId>
                 <version>${project.version}</version>
             </dependency>
