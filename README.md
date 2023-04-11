@@ -14,7 +14,7 @@
 <dependency>
    <groupId>com.dian1</groupId>
    <artifactId>http-spring-boot-starter</artifactId>
-   <version>2.4.0.10-SNAPSHOT</version>
+   <version>version</version>
 </dependency>
 ```
 
