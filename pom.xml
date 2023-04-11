@@ -20,7 +20,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.dian1</groupId>
+    <groupId>io.github.poo0054</groupId>
     <artifactId>dian1-http</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
@@ -97,13 +97,13 @@
             </dependency>
 
             <dependency>
-                <groupId>com.dian1</groupId>
+                <groupId>io.github.poo0054</groupId>
                 <artifactId>http-spring-boot-autoconfigure</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.dian1</groupId>
+                <groupId>io.github.poo0054</groupId>
                 <artifactId>http-spring-boot-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -162,6 +162,30 @@
 
         <plugins>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <!-- 绑定source插件到Maven的生命周期,并在生命周期后执行绑定的source的goal -->
+                <executions>
+                    <execution>
+                        <!-- 绑定source插件到Maven的生命周期 -->
+                        <phase>compile</phase>
+                        <!--在生命周期后执行绑定的source插件的goals -->
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -221,7 +245,6 @@
                      </mapping>-->
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 
@@ -237,32 +260,6 @@
             <id>release</id>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <configuration>
-                            <source>${java.version}</source>
-                            <target>${java.version}</target>
-                            <encoding>${project.build.sourceEncoding}</encoding>
-                        </configuration>
-                    </plugin>
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <!-- 绑定source插件到Maven的生命周期,并在生命周期后执行绑定的source的goal -->
-                        <executions>
-                            <execution>
-                                <!-- 绑定source插件到Maven的生命周期 -->
-                                <phase>compile</phase>
-                                <!--在生命周期后执行绑定的source插件的goals -->
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
                     <!-- Gpg Signature -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -295,12 +292,33 @@
             <distributionManagement>
                 <snapshotRepository>
                     <id>sonatype</id>
-                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
                 </snapshotRepository>
                 <repository>
                     <id>sonatype</id>
                     <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
                 </repository>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>dian1</id>
+            <build>
+                <plugins>
+
+                </plugins>
+            </build>
+
+            <distributionManagement>
+                <repository>
+                    <id>yidian</id>
+                    <name>maven-releases</name>
+                    <url>http://nexus.1-dian.cn/repository/maven-releases/</url>
+                </repository>
+                <snapshotRepository>
+                    <id>yidian</id>
+                    <name>maven-snapshots</name>
+                    <url>http://nexus.1-dian.cn/repository/maven-snapshots/</url>
+                </snapshotRepository>
             </distributionManagement>
         </profile>
 
