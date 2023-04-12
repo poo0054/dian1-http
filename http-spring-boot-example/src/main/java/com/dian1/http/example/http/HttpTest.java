@@ -66,7 +66,7 @@ public interface HttpTest {
 
     @Post("https://oms.test.1-dian.cn/oms/gen/download/1637748183482265601")
     @Header("Authorization: Bearer 318e7574-8e33-4a00-8e64-beeb15eb1ce3")
-    HttpResponse dowFile(@Download File file);
+    HttpResponse dowFile(File file);
 
     @Post("https://oms.test.1-dian.cn/oms/gen/download/1637748183482265601")
     @Header("Authorization: Bearer 318e7574-8e33-4a00-8e64-beeb15eb1ce3")

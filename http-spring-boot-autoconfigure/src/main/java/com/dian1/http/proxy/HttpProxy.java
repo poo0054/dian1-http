@@ -17,11 +17,14 @@ package com.dian1.http.proxy;
 import cn.hutool.core.io.StreamProgress;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpResponse;
+import cn.hutool.http.ssl.DefaultSSLInfo;
 import com.dian1.http.build.BuildHttpRequest;
 import com.dian1.http.build.BuildPropertiesClass;
 import com.dian1.http.build.BuildPropertiesMethod;
 import com.dian1.http.build.BuildPropertiesParameter;
+import com.dian1.http.exception.HttpException;
 import com.dian1.http.handle.HttpHandleCompose;
+import com.dian1.http.net.HttpSSLFactory;
 import com.dian1.http.properties.HttpProperties;
 import com.dian1.http.utils.ExceptionConsumer;
 import lombok.Data;
@@ -111,35 +114,48 @@ public class HttpProxy<T> implements InvocationHandler {
     }
 
     private Object exec(HttpProperties properties, ExceptionConsumer exceptionConsumer) {
+        //ssl默认信任所有
+        properties.setSsf(HttpSSLFactory.SSL_FACTORY);
+        properties.setHostnameVerifier(DefaultSSLInfo.TRUST_ANY_HOSTNAME_VERIFIER);
+
+        String error;
         //首先处理一些特殊的参数,  Consumer<HttpResponse> file  OutputStream
         try {
             handleSpecialArgs(properties);
         } catch (Exception e) {
-            exceptionConsumer.accept(e, "handleSpecialArgs");
+            error = "handleSpecialArgs";
+            exceptionConsumer.accept(e, error);
         }
         //类
         try {
             buildPropertiesClass.buildClassHandle(httpInterfaces, properties);
         } catch (Exception e) {
-            exceptionConsumer.accept(e, "buildClassHandle");
+            error = "buildClassHandle";
+            exceptionConsumer.accept(e, error);
         }
         //方法
         try {
             buildPropertiesMethod.buildMethodHandles(properties);
         } catch (Exception e) {
-            exceptionConsumer.accept(e, "buildMethodHandles");
+            error = "buildMethodHandles";
+            exceptionConsumer.accept(e, error);
         }
         //参数
         try {
             buildPropertiesParameter.buildParameterHandle(properties);
         } catch (Exception e) {
-            exceptionConsumer.accept(e, "buildParameterHandle");
+            error = "buildParameterHandle";
+            exceptionConsumer.accept(e, error);
         }
         //构建请求并构建返回
         try {
             return buildHttpRequest.response(buildHttpRequest.request(properties), properties);
         } catch (Exception e) {
-            exceptionConsumer.accept(e, "BuildHttpRequest");
+            error = "BuildHttpRequest";
+            exceptionConsumer.accept(e, error);
+        }
+        if (properties.isError()) {
+            throw new HttpException(error);
         }
         return null;
     }

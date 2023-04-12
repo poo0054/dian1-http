@@ -172,6 +172,10 @@ public class HttpProperties implements Serializable {
     private boolean isAsync;
 
     /**
+     * 是否抛出异常
+     */
+    private boolean isError = true;
+    /**
      * 其余参数
      */
     private Map other;

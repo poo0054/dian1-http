@@ -108,21 +108,21 @@ public class HutoolBuildHttpRequest implements BuildHttpRequest<HttpRequest> {
     public <V> Object resolving(HttpRequest httpRequest, HttpProperties properties) {
         //流 文件 HttpResponse处理
         Class<?> returnType = properties.getMostSpecificMethod().getReturnType();
-        if (ObjectUtil.isNotEmpty(properties.getFile())) {
-            HttpResponse response = httpRequest.setFollowRedirects(true).executeAsync();
-            long l = response.writeBody(properties.getFile(), properties.getStreamProgress());
-            return returnDownload(returnType, response, l);
-        } else if (ObjectUtil.isNotEmpty(properties.getOutputStream())) {
-            HttpResponse response = httpRequest.setFollowRedirects(true).executeAsync();
-            //TODO  可以把是否关闭流抽象出来
-            long l = response.writeBody(properties.getOutputStream(), true, properties.getStreamProgress());
-            return returnDownload(returnType, response, l);
-        } else if (ObjectUtil.isNotEmpty(properties.getConsumer())) {
+        if (ObjectUtil.isNotEmpty(properties.getConsumer())) {
             // 兼容后面版本
-            try (HttpResponse response = httpRequest.execute(true)) {
+            try (HttpResponse response = httpRequest.executeAsync()) {
                 properties.getConsumer().accept(response);
             }
             return null;
+        } else if (ObjectUtil.isNotEmpty(properties.getFile())) {
+            HttpResponse response = httpRequest.executeAsync();
+            long l = response.writeBody(properties.getFile(), properties.getStreamProgress());
+            return returnDownload(returnType, response, l);
+        } else if (ObjectUtil.isNotEmpty(properties.getOutputStream())) {
+            HttpResponse response = httpRequest.executeAsync();
+            //TODO  可以把是否关闭流抽象出来
+            long l = response.writeBody(properties.getOutputStream(), true, properties.getStreamProgress());
+            return returnDownload(returnType, response, l);
         } else if (HttpProxy.linkedList.get(4).isAssignableFrom(returnType)) {
             HttpResponse execute = httpRequest.execute(properties.isAsync());
             return execute;
