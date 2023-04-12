@@ -2,6 +2,8 @@ package com.dian1.http.net;
 
 import cn.hutool.core.net.SSLContextBuilder;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.ssl.SSLSocketFactoryBuilder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,8 +22,10 @@ import java.net.Socket;
 public class HttpSSLFactory extends SSLSocketFactory {
 
     public static final HttpSSLFactory SSL_FACTORY = new HttpSSLFactory();
-    private String[] protocols;
+
     private SSLSocketFactory base;
+
+    private String[] protocols;
 
     public HttpSSLFactory(String... protocols) {
         this(protocols, null);
@@ -30,6 +34,12 @@ public class HttpSSLFactory extends SSLSocketFactory {
     public HttpSSLFactory(String[] protocols, SSLSocketFactory base) {
         this.protocols = protocols;
         this.base = base;
+        //兼容android低版本SSL连接
+        if (null == protocols && StrUtil.equalsIgnoreCase("dalvik", System.getProperty("java.vm.name"))) {
+            this.protocols = new String[]{SSLSocketFactoryBuilder.SSLv3, SSLSocketFactoryBuilder.TLSv1,
+                    SSLSocketFactoryBuilder.TLSv11, SSLSocketFactoryBuilder.TLSv12
+            };
+        }
         if (null == base) {
             this.base = SSLContextBuilder.create().setTrustManagers(TrustManager.INSTANCE).buildQuietly().getSocketFactory();
         }

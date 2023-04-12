@@ -12,23 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dian1.http.annotate.type;
+package com.dian1.http.annotate.method;
 
 import com.dian1.http.handle.method.GetHandle;
 
 import java.lang.annotation.*;
 
 /**
- * put请求
+ * get请求
  *
  * @author zhangzhi
- * @date 2023/3/27+
+ * @date 2023/3/27
  * @see GetHandle
  */
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Put {
+public @interface Get {
     /**
      * 路径,可以为空.自行在处理器里面处理
      *

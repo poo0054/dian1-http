@@ -17,9 +17,9 @@ package com.dian1.http.example.http;
 import cn.hutool.core.io.StreamProgress;
 import cn.hutool.http.HttpResponse;
 import com.dian1.http.annotate.OpenHttp;
+import com.dian1.http.annotate.method.Get;
+import com.dian1.http.annotate.method.Post;
 import com.dian1.http.annotate.parameter.*;
-import com.dian1.http.annotate.type.Get;
-import com.dian1.http.annotate.type.Post;
 import com.dian1.http.example.entity.OmsContractHead;
 import com.dian1.http.example.entity.Request;
 

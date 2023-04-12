@@ -18,7 +18,7 @@ package com.dian1.http.handle.method;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.Method;
-import com.dian1.http.annotate.type.Delete;
+import com.dian1.http.annotate.method.Delete;
 import com.dian1.http.handle.MethodHandle;
 import com.dian1.http.properties.HttpProperties;
 import org.springframework.stereotype.Component;

@@ -175,6 +175,12 @@ public class HttpProperties implements Serializable {
      * 是否抛出异常
      */
     private boolean isError = true;
+
+    /**
+     * 是否信任所有ssl
+     */
+    private boolean isTrustSsl = true;
+
     /**
      * 其余参数
      */

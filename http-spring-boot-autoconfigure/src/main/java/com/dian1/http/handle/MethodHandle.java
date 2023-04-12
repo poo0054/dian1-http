@@ -20,7 +20,7 @@ import com.dian1.http.properties.HttpProperties;
 import java.lang.annotation.Annotation;
 
 /**
- * 类别处理器比如 {@link com.dian1.http.annotate.type.Get} {@link com.dian1.http.annotate.type.Post}等
+ * 类别处理器比如 {@link com.dian1.http.annotate.method.Get} {@link com.dian1.http.annotate.method.Post}等
  *
  * @author zhangzhi
  * @date 2023/3/27

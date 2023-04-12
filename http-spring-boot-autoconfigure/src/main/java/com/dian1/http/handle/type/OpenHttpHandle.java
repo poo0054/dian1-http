@@ -28,11 +28,11 @@ import org.springframework.stereotype.Component;
 @Data
 public class OpenHttpHandle implements ClassHandle<OpenHttp> {
 
-
     @Override
     public HttpProperties resolving(HttpProperties httpProperties, OpenHttp openHttp) {
         httpProperties.setBaseUrl(openHttp.value());
         httpProperties.setTimeout(openHttp.timeout());
+        httpProperties.setTrustSsl(openHttp.isTrustSsl());
         return httpProperties;
     }
 }

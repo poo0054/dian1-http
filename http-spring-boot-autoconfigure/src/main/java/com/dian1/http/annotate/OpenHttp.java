@@ -39,4 +39,9 @@ public @interface OpenHttp {
      * @return 毫秒
      */
     int timeout() default -1;
+
+    /**
+     * 是否忽略证书校验
+     */
+    boolean isTrustSsl() default true;
 }

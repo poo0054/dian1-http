@@ -115,8 +115,10 @@ public class HttpProxy<T> implements InvocationHandler {
 
     private Object exec(HttpProperties properties, ExceptionConsumer exceptionConsumer) {
         //ssl默认信任所有
-        properties.setSsf(HttpSSLFactory.SSL_FACTORY);
-        properties.setHostnameVerifier(DefaultSSLInfo.TRUST_ANY_HOSTNAME_VERIFIER);
+        if (properties.isTrustSsl()) {
+            properties.setSsf(HttpSSLFactory.SSL_FACTORY);
+            properties.setHostnameVerifier(DefaultSSLInfo.TRUST_ANY_HOSTNAME_VERIFIER);
+        }
 
         String error;
         //首先处理一些特殊的参数,  Consumer<HttpResponse> file  OutputStream

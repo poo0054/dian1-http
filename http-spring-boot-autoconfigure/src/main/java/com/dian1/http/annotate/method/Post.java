@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dian1.http.annotate.type;
+package com.dian1.http.annotate.method;
 
 import com.dian1.http.handle.method.PostHandle;
 

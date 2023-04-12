@@ -12,23 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dian1.http.annotate.type;
+package com.dian1.http.annotate.method;
 
-import com.dian1.http.handle.method.GetHandle;
+import com.dian1.http.handle.method.DeleteHandle;
 
 import java.lang.annotation.*;
 
 /**
- * get请求
+ * Delete请求
  *
  * @author zhangzhi
  * @date 2023/3/27
- * @see GetHandle
+ * @see DeleteHandle
  */
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Get {
+public @interface Delete {
     /**
      * 路径,可以为空.自行在处理器里面处理
      *
