@@ -12,7 +12,7 @@
 ```xml
 
 <dependency>
-   <groupId>com.dian1</groupId>
+   <groupId>io.github.poo0054</groupId>
    <artifactId>http-spring-boot-starter</artifactId>
    <version>version</version>
 </dependency>
