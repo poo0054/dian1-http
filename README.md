@@ -1,7 +1,8 @@
 > 使用方法
 
-在spring方法上添加 [EnableHttp.java](..%2F..%2Fdian1-spring-boot-autoconfigure%2Fhttp-spring-boot-autoconfigure%2Fsrc%2Fmain%2Fjava%2Fcom%2Fdian1%2Fhttp%2Fannotate%2FEnableHttp.java)
-注解并添加扫描路径即可启动
+在spring方法上添加
+[EnableHttp.java](..%2F..%2Fdian1-spring-boot-autoconfigure%2Fhttp-spring-boot-autoconfigure%2Fsrc%2Fmain%2Fjava%2Fcom%2Fdian1%2Fhttp%2Fannotate%2FEnableHttp.java)
+注解并添加扫描路径即可启动(未添加路径不会注入spring中)
 
 ---------
 
@@ -27,52 +28,94 @@ public interface HttpTest {
 
    /**
     * get方法
-    *
-    * @return 返回strng
+    * <p>
+    * auth: 请求头 Authorization 的值  类似 Authorization: 123456789
     */
    @Get("/m1/2406035-0-default/omsProductDetail/get")
    @Auth("123456789")
    String get();
 
+   /**
+    * 普通授权,根据username:password 进行base64编译,构建后类似   Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
+    */
+   @Post("/m1/2406035-0-default/omsContractHead/list")
+   @BasicAuth(username = "abc", password = "asd")
+   OmsContractHead basicAuth(@Form Map map);
+
+   /**
+    * restfull风格替换
+    * BasicAuth:参数上,值为map. 会根据注解的username找到map的key.注解的password找到value再进行base64编译
+    */
    @Get("m1/2406035-0-default/omsProductDetail/getProductCode/{code}")
    String restful(@BasicAuth Map nu, @Restful("code") String code);
 
+   /**
+    * 参数的方式添加form 必须添加启动参数 -parameters
+    *
+    * @Auth :header对应map=key:value
+    */
    @Get("m1/2406035-0-default/omsProductHeader/get")
    void form(String id, Consumer consumer, @Auth("key") Map key);
 
-   @Post("/m1/2406035-0-default/omsContractHead/list")
-   @BasicAuth(username = "abc", password = "asd")
-   OmsContractHead basicAuth(Map map);
-
+   /**
+    * Header: 请求头信息
+    */
    @Post("/m1/2406035-0-default/omsContractHead/list")
    @Header({"Authorization: 123456789", "Accept-Encoding: gzip"})
    OmsContractHead header();
 
+   /**
+    * 返回值默认fastjson格式化 .适配复杂的结构
+    */
    @Post("/m1/2406035-0-default/omsContractHead/list")
    OmsContractHead headerPar(String str);
 
+   /**
+    * Header:对应map的key:value
+    */
    @Post("/m1/2406035-0-default/omsContractHead/list")
    OmsContractHead headerMap(@Header Map str);
 
+   /**
+    * 文件下载
+    * Header: 使用:分割
+    */
    @Post("https://oms.test.1-dian.cn/oms/gen/download/1637748183482265601")
    @Header("Authorization: Bearer 318e7574-8e33-4a00-8e64-beeb15eb1ce3")
-   HttpResponse dowFile(@Download File file);
+   HttpResponse dowFile(File file);
 
+   /**
+    * 文件下载
+    */
    @Post("https://oms.test.1-dian.cn/oms/gen/download/1637748183482265601")
    @Header("Authorization: Bearer 318e7574-8e33-4a00-8e64-beeb15eb1ce3")
-   HttpResponse dowOutputStream(@Download OutputStream outputStream, StreamProgress streamProgress);
+   HttpResponse dowOutputStream(OutputStream outputStream, StreamProgress streamProgress);
 
+   /**
+    * 文件上传:  会自动构建请求头.value为file即可
+    *
+    * @param map
+    */
    @Post("http://127.0.0.1:4523/m1/2406035-0-default/common/templateUploadFile")
-   void uploadMap(Map<String, Object> map);
+   void uploadMap(@Form Map<String, Object> map);
 
+   /**
+    * 文件上传:  会自动构建请求头.
+    * key:key  value :file
+    */
    @Post("test")
-   void upload(@Form("file") File file);
+   void upload(@Form("key") File file);
 
+   /**
+    * Header: key为apifoxToken , value为header
+    */
    @Post("https://mock.apifox.cn/m1/2406035-0-default/omsProductDetail/add?apifoxToken=byFyzN6aEZfSNoiLWuoaBc7dvPtTlWo8")
-   void validate(@HttpValidated Request request, @Header("apifoxToken") String hean);
+   void validate(@HttpValidated Request request, @Header("apifoxToken") String header);
 }
 
+
 /**
+ * 使用方法,@Autowired注入即可
  * @author zhangzhi
  * @date 2023/3/28
  */
@@ -85,126 +128,6 @@ public class TestController {
    @GetMapping
    public String get() {
       return httpTest.get();
-   }
-
-   @GetMapping("restful/{code}")
-   public String test(@PathVariable("code") String code) {
-      Map<Object, Object> map = new HashMap<>();
-      map.put("username", "张三");
-      map.put("password", "123456");
-      return httpTest.restful(map, code);
-   }
-
-   @GetMapping("form/{code}")
-   public String getOmsProductHeader(@PathVariable("code") String code) {
-      AtomicReference<String> body = new AtomicReference<>();
-      Consumer<HttpResponse> consumer = response -> {
-         System.out.println();
-         System.out.println();
-         body.set(response.body());
-      };
-      Map<Object, Object> map = new HashMap<>();
-      map.put("key", "123456789");
-      httpTest.form(code, consumer, map);
-      return body.get();
-   }
-
-   @GetMapping("body/{code}")
-   public OmsContractHead form(@PathVariable("code") String code) {
-      HashMap<String, Object> map = new HashMap<>();
-      map.put("size", 1);
-      map.put("start", 1);
-      map.put("productCode", code);
-      OmsContractHead body = httpTest.basicAuth(map);
-      return body;
-   }
-
-   @GetMapping("header/{code}")
-   public OmsContractHead header(@PathVariable("code") String code) {
-      OmsContractHead head = httpTest.header();
-      return head;
-   }
-
-   @GetMapping("headerPar/{code}")
-   public OmsContractHead headerPar(@PathVariable("code") String code) {
-      OmsContractHead head = httpTest.headerPar("asd");
-      return head;
-   }
-
-   @GetMapping("headerMap/{code}")
-   public OmsContractHead headerMap(@PathVariable("code") String code) {
-      Map<Object, Object> hashMap = new HashMap<>();
-      hashMap.put("Authorization", "123456789");
-      hashMap.put("Accept", " application/json");
-      OmsContractHead head = httpTest.headerMap(hashMap);
-      return head;
-   }
-
-   @GetMapping("dow")
-   public void dow(HttpServletResponse response) throws IOException {
-      response.reset();
-      response.setHeader("Content-Disposition", "attachment; filename=\"poo0054.zip\"");
-      response.setContentType("application/octet-stream; charset=UTF-8");
-      StreamProgress streamProgress = new StreamProgress() {
-         @Override
-         public void start() {
-            System.out.println("我开始了");
-         }
-
-         @Override
-         public void progress(long progressSize) {
-            //如果需要获取全部大小 从response 的 Content-Length获取总大小
-            System.out.println("当前传了" + progressSize);
-         }
-
-         @Override
-         public void finish() {
-            System.out.println("结束了");
-         }
-      };
-      HttpResponse httpResponse = httpTest.dowOutputStream(response.getOutputStream(), streamProgress);
-      System.out.println(httpResponse);
-   }
-
-   @GetMapping("dowFile")
-   public void dowFile() throws IOException {
-      File file = new File("D:/test.zip");
-      if (file.isFile()) {
-         file.createNewFile();
-      }
-      HttpResponse httpResponse = httpTest.dowFile(file);
-      System.out.println(httpResponse);
-   }
-
-   @GetMapping("upload")
-   public void upload() throws IOException {
-      File file = new File("D:/test.zip");
-      if (file.isFile()) {
-         file.createNewFile();
-      }
-      httpTest.upload(file);
-   }
-
-   @GetMapping("uploadMap")
-   public void uploadMap() throws IOException {
-      File file = new File("D:/test.zip");
-      if (file.isFile()) {
-         file.createNewFile();
-      }
-      Map<String, Object> map = new HashMap<>();
-      map.put("file", file);
-      httpTest.uploadMap(map);
-   }
-
-   @GetMapping("validate")
-   public void validate() {
-      Request request = new Request();
-      OmsContractHead omsContractHead = new OmsContractHead();
-      request.setExpenseAccountCode("asd");
-      request.setOmsContractHead(omsContractHead);
-      omsContractHead.setStart(1);
-      String hean = "byFyzN6aEZfSNoiLWuoaBc7dvPtTlWo8";
-      httpTest.validate(request, hean);
    }
 
 }
