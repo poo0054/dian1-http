@@ -89,8 +89,19 @@ public class HttpProxy<T> implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
-        HttpProperties properties = new HttpProperties();
         Method mostSpecificMethod = AopUtils.getMostSpecificMethod(method, httpInterfaces);
+        //调用object方法
+        if (AopUtils.isEqualsMethod(method)) {
+            // The target does not implement the equals(Object) method itself.
+            return equals(args[0]);
+        } else if (AopUtils.isHashCodeMethod(method)) {
+            // The target does not implement the hashCode() method itself.
+            return hashCode();
+        } else if (AopUtils.isToStringMethod(mostSpecificMethod)) {
+            return toString();
+        }
+
+        HttpProperties properties = new HttpProperties();
         properties.setMostSpecificMethod(mostSpecificMethod);
         properties.setArgs(args);
         return exec(properties, (e, name) -> {
