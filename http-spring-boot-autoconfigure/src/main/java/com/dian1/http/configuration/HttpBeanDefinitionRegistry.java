@@ -25,7 +25,6 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
 
 /**
  * @author zhangzhi
- * @date 2023/3/27
  */
 @Slf4j
 @Data

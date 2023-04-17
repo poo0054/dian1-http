@@ -22,7 +22,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author zhangzhi
- * @date 2023/3/29
  */
 @Component
 public class DownloadHandle implements ParameterHandle<Download>, MethodHandle<Download> {

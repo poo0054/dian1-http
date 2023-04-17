@@ -20,7 +20,6 @@ import org.springframework.core.type.AnnotationMetadata;
 
 /**
  * @author zhangzhi
- * @date 2023/3/27
  */
 @Slf4j
 public class HttpSelector implements ImportSelector {

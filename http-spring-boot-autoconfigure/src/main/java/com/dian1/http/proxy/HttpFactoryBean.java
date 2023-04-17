@@ -30,7 +30,7 @@ import java.lang.reflect.Proxy;
  * 当前默认的FactoryBean.把 {@link com.dian1.http.annotate.OpenHttp}注解的类创建代理对象
  *
  * @author zhangzhi
- * @date 2023/3/27
+
  */
 @Getter
 public class HttpFactoryBean<T> implements FactoryBean<T>, BeanFactoryAware {

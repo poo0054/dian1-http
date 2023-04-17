@@ -24,7 +24,6 @@ import org.springframework.core.type.AnnotationMetadata;
 
 /**
  * @author zhangzhi
- * @date 2023/3/28
  */
 public class HttpRegistrar implements ImportBeanDefinitionRegistrar {
 

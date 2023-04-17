@@ -38,7 +38,6 @@ import java.util.function.Consumer;
  * 配置对象,根据该对象构建请求对象
  *
  * @author zhangzhi
- * @date 2023/3/27
  */
 @Data
 public class HttpProperties implements Serializable {
@@ -79,15 +78,15 @@ public class HttpProperties implements Serializable {
      */
     private Map<String, Object> body = new HashMap<>();
 
-    /**
-     * 设置内容主体 请求体body参数支持两种类型：
-     * 1. 标准参数，例如 a=1&b=2 这种格式
-     * 2. Rest模式，此时body需要传入一个JSON或者XML字符串
+    /*
+       设置内容主体 请求体body参数支持两种类型：
+       1. 标准参数，例如 a=1&b=2 这种格式
+       2. Rest模式，此时body需要传入一个JSON或者XML字符串
      */
     private String bodyStr;
 
     /**
-     * 优先级 bodyBytes>bodyStr>body
+     * 优先级 bodyBytes bodyStr body
      * 设置主体字节码 需在此方法调用前使用charset方法设置编码，否则使用默认编码UTF-8
      */
     private byte[] bodyBytes;

@@ -35,7 +35,6 @@ import java.util.Map;
 
 /**
  * @author zhangzhi
- * @date 2023/4/7
  */
 @Data
 @Slf4j
@@ -103,6 +102,7 @@ public class HutoolBuildHttpRequest implements BuildHttpRequest<HttpRequest> {
      *
      * @param httpRequest httpRequest
      * @param properties  properties配置文件
+     * @param <V>         注解
      * @return 接口返回值
      */
     public <V> Object resolving(HttpRequest httpRequest, HttpProperties properties) {

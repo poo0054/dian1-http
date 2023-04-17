@@ -47,7 +47,7 @@ import java.util.function.Consumer;
  * 接口的代理对象
  *
  * @author zhangzhi
- * @date 2023/3/27
+
  */
 @Data
 @Slf4j

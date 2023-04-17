@@ -20,7 +20,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author zhangzhi
- * @date 2023/3/28
+
  */
 @EnableHttp(scan = "com.dian1.http.example.http")
 @SpringBootApplication

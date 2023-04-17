@@ -25,7 +25,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author zhangzhi
- * @date 2023/3/27
  */
 @Component
 public class GetHandle implements MethodHandle<Get> {

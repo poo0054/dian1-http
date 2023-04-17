@@ -22,7 +22,6 @@ import java.lang.annotation.*;
  * put请求
  *
  * @author zhangzhi
- * @date 2023/3/27+
  * @see GetHandle
  */
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})

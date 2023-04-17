@@ -24,7 +24,6 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @author zhangzhi
- * @date 2023/4/7
  */
 @Configuration(proxyBeanMethods = false)
 @ComponentScan("com.dian1.http.build")

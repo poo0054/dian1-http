@@ -25,7 +25,6 @@ import java.util.Map;
 
 /**
  * @author zhangzhi
- * @date 2023/3/28
  */
 @Component
 public class FormHandle implements ParameterHandle<Form> {
@@ -48,24 +47,24 @@ public class FormHandle implements ParameterHandle<Form> {
         return properties;
     }
 
-    /**
-     * 适配不填写参数的方式添加form
-     * 必须添加启动参数 -parameters
-     * <p>
-     * maven项目可以添加
-     * --------------------------
-     * <plugin>
-     * <groupId>org.apache.maven.plugins</groupId>
-     * <artifactId>maven-compiler-plugin</artifactId>
-     * <configuration>
-     * <source>${java.version}</source>
-     * <target>${java.version}</target>
-     * <encoding>${project.build.sourceEncoding}</encoding>
-     * <compilerArgs>
-     * <arg>-parameters</arg>
-     * </compilerArgs>
-     * </configuration>
-     * </plugin>
+    /*
+       适配不填写参数的方式添加form
+       必须添加启动参数 -parameters
+       <p>
+       maven项目可以添加
+       --------------------------
+       <plugin>
+       <groupId>org.apache.maven.plugins</groupId>
+       <artifactId>maven-compiler-plugin</artifactId>
+       <configuration>
+       <source>${java.version}</source>
+       <target>${java.version}</target>
+       <encoding>${project.build.sourceEncoding}</encoding>
+       <compilerArgs>
+       <arg>-parameters</arg>
+       </compilerArgs>
+       </configuration>
+       </plugin>
      */
     public HttpProperties autoResolving(HttpProperties properties, Object arg, String name) {
         Map<String, Object> form = properties.getForm();

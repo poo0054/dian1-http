@@ -22,7 +22,6 @@ import org.springframework.context.annotation.Lazy;
 
 /**
  * @author zhangzhi
- * @date 2023/4/7
  */
 @Configuration(proxyBeanMethods = false)
 @ComponentScan(value = "com.dian1.http.handle")

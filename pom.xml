@@ -31,6 +31,14 @@
         <module>http-spring-boot-example</module>
     </modules>
 
+    <name>dian1-http</name>
+
+    <url>https://github.com/poo0054/dian1-http</url>
+
+    <description>
+        使用注解操作http请求,简单高效
+    </description>
+
     <properties>
         <revision>1.1</revision>
         <java.version>8</java.version>
@@ -47,8 +55,8 @@
 
         <!--        maven-->
         <flatten-maven.version>1.1.0</flatten-maven.version>
-        <maven-javadoc.version>3.0.0</maven-javadoc.version>
-        <maven-compiler.version>3.1</maven-compiler.version>
+        <maven-javadoc.version>2.9.1</maven-javadoc.version>
+        <maven-compiler.version>3.8.1</maven-compiler.version>
         <maven-source.version>3.2.1</maven-source.version>
         <license-maven.version>4.2.rc3</license-maven.version>
         <checksum-maven.version>1.3</checksum-maven.version>
@@ -119,6 +127,16 @@
         </license>
     </licenses>
 
+    <!--发布者信息-->
+    <developers>
+        <developer>
+            <name>zhangzhi</name>
+            <email>poo0054@outlook.com</email>
+            <organization>io.github.poo0054</organization>
+            <organizationUrl>https://io.github.poo0054</organizationUrl>
+        </developer>
+    </developers>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -138,6 +156,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
                     <version>${maven-source.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven-javadoc.version}</version>
                 </plugin>
 
                 <plugin>
@@ -161,6 +184,21 @@
 
 
         <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <aggregate>true</aggregate>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

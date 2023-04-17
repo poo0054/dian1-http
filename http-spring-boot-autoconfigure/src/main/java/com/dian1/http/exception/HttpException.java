@@ -18,7 +18,6 @@ import cn.hutool.core.util.StrUtil;
 
 /**
  * @author zhangzhi
- * @date 2023/4/10
  */
 public class HttpException extends RuntimeException {
     private static final long serialVersionUID = 4443507961031283271L;

@@ -18,7 +18,6 @@ import java.lang.annotation.*;
 
 /**
  * @author zhangzhi
- * @date 2023/3/27
  */
 @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -41,7 +40,8 @@ public @interface OpenHttp {
     int timeout() default -1;
 
     /**
-     * 是否忽略证书校验
+     * @return 是否忽略证书校验
      */
     boolean isTrustSsl() default true;
+
 }

@@ -20,7 +20,6 @@ import org.springframework.context.annotation.Import;
 
 /**
  * @author zhangzhi
- * @date 2023/3/28
  */
 @Import({BuildConfiguration.class, HandleConfiguration.class})
 public class HttpConfiguration {

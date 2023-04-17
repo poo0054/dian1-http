@@ -20,7 +20,6 @@ import java.lang.annotation.Annotation;
 
 /**
  * @author zhangzhi
- * @date 2023/4/7
  */
 public interface BuildHttpRequest<T> {
     /**

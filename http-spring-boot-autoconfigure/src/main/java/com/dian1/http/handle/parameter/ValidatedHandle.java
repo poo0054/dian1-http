@@ -34,7 +34,6 @@ import java.util.*;
  * 校验抽象类
  *
  * @author zhangzhi
- * @date 2023/4/4
  */
 @Data
 @Slf4j

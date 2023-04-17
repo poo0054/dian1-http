@@ -10,7 +10,7 @@ import java.security.cert.X509Certificate;
  * 兼容hutool高版本
  *
  * @author zhangzhi
- * @date 2023/4/12
+
  */
 public class TrustManager extends X509ExtendedTrustManager {
 

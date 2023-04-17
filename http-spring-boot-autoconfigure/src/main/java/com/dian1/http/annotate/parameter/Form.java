@@ -22,7 +22,6 @@ import java.lang.annotation.*;
  * 默认使用参数的名称作为key.值为value
  *
  * @author zhangzhi
- * @date 2023/3/27
  * @see com.dian1.http.handle.parameter.FormHandle
  */
 @Target({ElementType.PARAMETER})

@@ -23,19 +23,18 @@ import java.lang.annotation.*;
  * 在参数上,校验当前参数
  *
  * @author zhangzhi
- * @date 2023/4/4
  */
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface HttpValidated {
     /**
-     * 分组
+     * @return 分组
      */
-    Class<?>[] groups() default Default.class;
+    Class[] groups() default Default.class;
 
     /**
-     * 指定处理类,必须为{@link ParameterHandle}的子类全类名 或者注入spring的name
+     * @return 指定处理类, 必须为{@link ParameterHandle}的子类全类名 或者注入spring的name
      */
     String handleClassName() default "";
 }

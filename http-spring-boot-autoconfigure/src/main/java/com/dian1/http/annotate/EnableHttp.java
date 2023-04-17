@@ -25,7 +25,6 @@ import java.lang.annotation.*;
  * 启动类
  *
  * @author zhangzhi
- * @date 2023/3/27
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

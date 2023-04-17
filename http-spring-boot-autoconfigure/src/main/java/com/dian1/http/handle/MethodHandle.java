@@ -23,7 +23,6 @@ import java.lang.annotation.Annotation;
  * 类别处理器比如 {@link com.dian1.http.annotate.method.Get} {@link com.dian1.http.annotate.method.Post}等
  *
  * @author zhangzhi
- * @date 2023/3/27
  */
 public interface MethodHandle<T extends Annotation> extends HttpHandle {
 
@@ -32,7 +31,7 @@ public interface MethodHandle<T extends Annotation> extends HttpHandle {
      *
      * @param properties 配置类对象
      * @param t          当前注解
-     * @return
+     * @return properties
      */
     HttpProperties resolving(HttpProperties properties, T t);
 

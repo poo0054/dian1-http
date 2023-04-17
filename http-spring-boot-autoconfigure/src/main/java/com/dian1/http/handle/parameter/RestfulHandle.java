@@ -23,7 +23,7 @@ import java.util.function.Function;
 
 /**
  * @author zhangzhi
- * @date 2023/3/28
+
  */
 @Component
 public class RestfulHandle implements ParameterHandle<Restful> {

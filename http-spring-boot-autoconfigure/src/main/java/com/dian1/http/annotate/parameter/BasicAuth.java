@@ -25,7 +25,7 @@ import java.lang.annotation.*;
  * 在参数上参数为map,key为username和password的值 默认为username和password
  *
  * @author zhangzhi
- * @date 2023/3/27
+
  * @see com.dian1.http.handle.parameter.BasicAuthHandle
  */
 @Target({ElementType.PARAMETER, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
