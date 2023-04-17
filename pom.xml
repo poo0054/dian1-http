@@ -20,7 +20,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.poo0054</groupId>
+    <groupId>com.dian1</groupId>
     <artifactId>dian1-http</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
@@ -105,13 +105,13 @@
             </dependency>
 
             <dependency>
-                <groupId>io.github.poo0054</groupId>
+                <groupId>com.dian1</groupId>
                 <artifactId>http-spring-boot-autoconfigure</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.github.poo0054</groupId>
+                <groupId>com.dian1</groupId>
                 <artifactId>http-spring-boot-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
